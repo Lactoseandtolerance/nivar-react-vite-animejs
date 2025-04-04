@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useScrollStore } from '../stores/scrollStore';
-import anime from 'animejs';
+import animeHelper from '../utils/animeHelper';
 
 const NavContainer = styled.div`
   position: fixed;
@@ -76,7 +76,7 @@ const MobileNavigation = () => {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     const targetY = scrollTop + rect.top;
     
-    anime({
+    animeHelper.animate({
       targets: [document.documentElement, document.body],
       scrollTop: targetY,
       duration: 1000,

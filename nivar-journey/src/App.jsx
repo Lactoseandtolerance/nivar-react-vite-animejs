@@ -12,6 +12,9 @@ import StaggeredGrid from './components/animations/StaggeredGrid';
 import SVGPathDraw from './components/animations/SVGPathDraw';
 import { useScrollStore } from './stores/scrollStore';
 import { analytics } from './utils/analytics';
+import animeHelper from './utils/animeHelper';
+import MobileNavigation from './components/MobileNavigation';
+import { useMediaQuery } from './hooks/useMediaQuery';
 
 // Global styles
 const GlobalStyle = createGlobalStyle`
@@ -261,6 +264,7 @@ const Copyright = styled.p`
 // Main App component
 const App = () => {
   const { setCurrentSection } = useScrollStore();
+  const isMobile = useMediaQuery('(max-width: 768px)');
   
   // Initialize scroll position on load
   useEffect(() => {
@@ -334,7 +338,7 @@ const App = () => {
 
   useEffect(() => {
      analytics.init();
-     }, []);
+  }, []);
   
   return (
     <>
@@ -344,7 +348,10 @@ const App = () => {
       <ScrollStarBackground />
       
       {/* Navigation indicator */}
-      <NavigationIndicator />
+      {!isMobile && <NavigationIndicator />}
+      
+      {/* Mobile navigation for small screens */}
+      {isMobile && <MobileNavigation />}
       
       {/* Main scroll container */}
       <ScrollContainer>

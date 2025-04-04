@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import anime from 'animejs';
+import * as anime from 'animejs';
 
 const Grid = styled.div`
   display: grid;

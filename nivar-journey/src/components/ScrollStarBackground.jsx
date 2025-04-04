@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import anime from 'animejs';
+import animeHelper from '../utils/animeHelper';
 import { useScrollStore } from '../stores/scrollStore';
 
 // Main container for the star background
@@ -179,7 +179,7 @@ const ScrollStarBackground = () => {
   // Initialize animations for various elements
   const initializeAnimations = () => {
     // Animate stars twinkling
-    anime({
+    animeHelper.animate({
       targets: '.star',
       opacity: [
         { value: el => el.style.opacity * 0.5, duration: 700, easing: 'easeInOutSine' },
@@ -189,7 +189,7 @@ const ScrollStarBackground = () => {
         { value: 0.8, duration: 700, easing: 'easeInOutSine' },
         { value: 1, duration: 700, easing: 'easeInOutSine' }
       ],
-      delay: anime.stagger(200, { grid: [100, 5], from: 'random' }),
+      delay: animeHelper.stagger(200, { grid: [100, 5], from: 'random' }),
       loop: true
     });
     
@@ -197,23 +197,23 @@ const ScrollStarBackground = () => {
     animateComets();
     
     // Animate nebulae
-    anime({
+    animeHelper.animate({
       targets: '.nebula',
       opacity: [0.05, 0.2, 0.05],
       scale: [1, 1.1, 1],
       duration: 20000,
       easing: 'easeInOutSine',
-      delay: anime.stagger(5000),
+      delay: animeHelper.stagger(5000),
       loop: true
     });
     
     // Animate constellation lines
-    anime({
+    animeHelper.animate({
       targets: '.constellation-line',
-      strokeDashoffset: [anime.setDashoffset, 0],
+      strokeDashoffset: [animeHelper.setDashoffset, 0],
       easing: 'easeInOutSine',
       duration: 1500,
-      delay: anime.stagger(300),
+      delay: animeHelper.stagger(300),
       loop: false
     });
   };
@@ -227,7 +227,7 @@ const ScrollStarBackground = () => {
       const newX = window.innerWidth + 200;
       const newY = -200;
       
-      anime({
+      animeHelper.animate({
         targets: cometEl,
         translateX: [comet.x - 200, newX],
         translateY: [comet.y, newY],
@@ -242,7 +242,7 @@ const ScrollStarBackground = () => {
           comet.speed = 100 + Math.random() * 400;
           comet.delay = Math.random() * 5;
           
-          anime({
+          animeHelper.animate({
             targets: cometEl,
             translateX: comet.x,
             translateY: comet.y,
@@ -259,7 +259,7 @@ const ScrollStarBackground = () => {
     const newX = window.innerWidth + 200;
     const newY = -200;
     
-    anime({
+    animeHelper.animate({
       targets: element,
       translateX: [comet.x, newX],
       translateY: [comet.y, newY],
@@ -272,7 +272,7 @@ const ScrollStarBackground = () => {
         comet.y = window.innerHeight + 200;
         comet.angle = Math.random() * 60 - 30;
         
-        anime({
+        animeHelper.animate({
           targets: element,
           translateX: comet.x,
           translateY: comet.y,
@@ -308,7 +308,7 @@ const ScrollStarBackground = () => {
     }
     
     // Animate color change for some stars
-    anime({
+    animeHelper.animate({
       targets: '.accent-star',
       backgroundColor: accentColor,
       boxShadowColor: accentColor,

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import anime from 'animejs';
+import * as anime from 'animejs';
 import { useScrollStore } from '../stores/scrollStore';
 import { seo } from '../utils/seo';
 
@@ -51,15 +51,17 @@ const ScrollContainer = ({ children }) => {
       }
     };
 
-    useEffect(() => {
-        seo.updateMetaTags(currentSection);
-        }, [currentSection]);
+
     
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [currentSection, setCurrentSection, setScrollProgress]);
   
-  return (
+  useEffect(() => {
+    seo.updateMetaTags(currentSection);
+    }, [currentSection]);
+  
+    return (
     <Container ref={containerRef}>
       {children}
     </Container>

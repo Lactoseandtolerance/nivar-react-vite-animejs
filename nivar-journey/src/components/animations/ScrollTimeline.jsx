@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import anime from 'animejs';
+import animeHelper from '../../utils/animeHelper';
 import { useScrollStore } from '../../stores/scrollStore';
 
 const TimelineContainer = styled.div`
@@ -153,7 +153,7 @@ const ScrollTimeline = ({
       const triggerPoint = index / (items.length * 1.5);
       
       if (progress > triggerPoint) {
-        anime({
+        animeHelper.animate({
           targets: item,
           opacity: [0, 1],
           translateY: [50, 0],

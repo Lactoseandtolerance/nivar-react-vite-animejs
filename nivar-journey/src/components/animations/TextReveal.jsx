@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import anime from 'animejs';
+import animeHelper from '../../utils/animeHelper';
 
 const TextWrapper = styled.div`
   overflow: hidden;
@@ -32,13 +32,13 @@ const TextReveal = ({
     if (!element) return;
     
     const animate = () => {
-      anime({
+      animeHelper.animate({
         targets: element.querySelectorAll('.text-reveal-char'),
         translateY: [100, 0],
         opacity: [0, 1],
         easing,
         duration,
-        delay: anime.stagger(staggerValue, { start: delay }),
+        delay: animeHelper.stagger(staggerValue, { start: delay }),
       });
     };
     

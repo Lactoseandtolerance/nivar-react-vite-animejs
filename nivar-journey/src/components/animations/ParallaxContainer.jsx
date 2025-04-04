@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import anime from 'animejs';
+import animeHelper from '../../utils/animeHelper';
 
 const Container = styled.div`
   position: relative;
@@ -45,20 +45,20 @@ const ParallaxContainer = ({
         const direction = element.dataset.parallaxDirection || 'vertical';
         
         if (direction === 'vertical') {
-          anime.set(element, {
+          animeHelper.set(element, {
             translateY: `${distanceFromCenter * 100 * speed}px`
           });
         } else if (direction === 'horizontal') {
-          anime.set(element, {
+          animeHelper.set(element, {
             translateX: `${distanceFromCenter * 100 * speed}px`
           });
         } else if (direction === 'rotation') {
-          anime.set(element, {
+          animeHelper.set(element, {
             rotate: `${distanceFromCenter * 15 * speed}deg`
           });
         } else if (direction === 'scale') {
           const scale = 1 + (distanceFromCenter * 0.2 * speed);
-          anime.set(element, {
+          animeHelper.set(element, {
             scale: Math.max(0.5, Math.min(1.5, scale))
           });
         }

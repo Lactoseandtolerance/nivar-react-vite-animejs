@@ -1,90 +1,106 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import anime from 'animejs';
 import { useScrollStore } from '../stores/scrollStore';
+import animeHelper from '../utils/animeHelper';
 
-const Section = styled.section`
-  min-height: 100vh;
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
-  
-  /* Each section could have custom styling */
-  ${props => props.customStyles}
+const NavContainer = styled.div`
+  position: fixed;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
 `;
 
-// Component for sections that respond to scroll position
-const ScrollSection = ({ 
-  id, 
-  children, 
-  customStyles,
-  onEnter, // Function to call when section enters viewport
-  onProgress, // Function to call during scroll through section
-  onLeave // Function to call when section leaves viewport
-}) => {
-  const sectionRef = useRef(null);
-  const { currentSection, setSectionProgress } = useScrollStore();
-  const isActive = currentSection === id;
+const NavDot = styled.div`
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: ${props => props.active ? props.activeColor || '#d4af37' : '#333'};
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
   
-  useEffect(() => {
-    const section = sectionRef.current;
+  &:hover {
+    transform: scale(1.2);
+  }
+  
+  &::after {
+    content: '${props => props.label}';
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    color: ${props => props.active ? props.activeColor || '#d4af37' : '#888'};
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  &:hover::after {
+    opacity: 1;
+  }
+`;
+
+const ProgressIndicator = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: ${props => props.progress * 100}%;
+  height: 3px;
+  background: linear-gradient(to right, #d4af37, #00e676);
+  z-index: 1000;
+`;
+
+const NavigationIndicator = () => {
+  const { currentSection, scrollProgress } = useScrollStore();
+  
+  const sections = [
+    { id: 'intro', label: 'Intro', color: '#d4af37' },
+    { id: 'about', label: 'About', color: '#d4af37' },
+    { id: 'projects', label: 'Projects', color: '#d4af37' },
+    { id: 'goals', label: 'Goals', color: '#00e676' },
+    { id: 'resume', label: 'Resume', color: '#00e676' },
+    { id: 'contact', label: 'Contact', color: '#ff6b6b' }
+  ];
+  
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id);
+    if (!element) return;
     
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && onEnter) {
-            onEnter();
-          } else if (!entry.isIntersecting && onLeave) {
-            onLeave();
-          }
-        });
-      },
-      { threshold: 0.1 } // 10% of the section is visible
-    );
+    // Use animeHelper for smooth scrolling
+    const rect = element.getBoundingClientRect();
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const targetY = scrollTop + rect.top;
     
-    if (section) {
-      observer.observe(section);
-    }
-    
-    // Calculate section scroll progress
-    const handleScroll = () => {
-      if (!section) return;
-      
-      const rect = section.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      
-      // Progress goes from 0 (section top at bottom of viewport)
-      // to 1 (section bottom at top of viewport)
-      const progress = 1 - (rect.bottom / (rect.height + windowHeight));
-      
-      // Clamp progress between 0 and 1
-      const clampedProgress = Math.max(0, Math.min(1, progress));
-      
-      setSectionProgress(id, clampedProgress);
-      
-      if (onProgress) {
-        onProgress(clampedProgress);
-      }
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    
-    return () => {
-      observer.disconnect();
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [id, onEnter, onLeave, onProgress, setSectionProgress]);
+    animeHelper.animate({
+      targets: [document.documentElement, document.body],
+      scrollTop: targetY,
+      duration: 1000,
+      easing: 'easeInOutQuad'
+    });
+  };
   
   return (
-    <Section 
-      id={id} 
-      ref={sectionRef} 
-      className={isActive ? 'active' : ''}
-      customStyles={customStyles}
-    >
-      {children}
-    </Section>
+    <>
+      <ProgressIndicator progress={scrollProgress} />
+      <NavContainer>
+        {sections.map(section => (
+          <NavDot
+            key={section.id}
+            active={currentSection === section.id}
+            activeColor={section.color}
+            label={section.label}
+            onClick={() => scrollToSection(section.id)}
+          />
+        ))}
+      </NavContainer>
+    </>
   );
 };
 
-export default ScrollSection;
+export default NavigationIndicator;

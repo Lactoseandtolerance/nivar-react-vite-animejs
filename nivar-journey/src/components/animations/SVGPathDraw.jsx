@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
-import anime from 'animejs';
 import styled from 'styled-components';
+import animeHelper from '../../utils/animeHelper';
 import { useScrollStore } from '../../stores/scrollStore';
 
 const SVGWrapper = styled.div`
@@ -36,20 +36,20 @@ const SVGPathDraw = ({
     
     // Set initial state - paths are invisible
     pathElements.forEach(path => {
-      anime.set(path, {
-        strokeDashoffset: anime.setDashoffset,
-        strokeDasharray: anime.setDashoffset,
+      animeHelper.set(path, {
+        strokeDashoffset: animeHelper.setDashoffset,
+        strokeDasharray: animeHelper.setDashoffset,
       });
     });
     
     // If startOnScroll is false, animate immediately
     if (!startOnScroll) {
-      anime({
+      animeHelper.animate({
         targets: pathElements,
-        strokeDashoffset: [anime.setDashoffset, 0],
+        strokeDashoffset: [animeHelper.setDashoffset, 0],
         easing: 'easeInOutSine',
         duration: 1500,
-        delay: anime.stagger(300),
+        delay: animeHelper.stagger(300),
       });
     }
   }, [startOnScroll]);
@@ -61,7 +61,7 @@ const SVGPathDraw = ({
     const pathElements = Array.from(svgRef.current.querySelectorAll('path'));
     
     pathElements.forEach((path, index) => {
-      const dashoffset = anime.setDashoffset(path);
+      const dashoffset = animeHelper.setDashoffset(path);
       const delay = index * 0.1; // Stagger effect
       const triggerPoint = 0.1 + delay;
       
@@ -70,7 +70,7 @@ const SVGPathDraw = ({
         const relativeProgress = (progress - triggerPoint) / (1 - triggerPoint);
         const newOffset = dashoffset * (1 - Math.min(1, relativeProgress * 2));
         
-        anime.set(path, {
+        animeHelper.set(path, {
           strokeDashoffset: newOffset
         });
       }

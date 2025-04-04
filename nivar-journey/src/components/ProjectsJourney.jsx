@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import anime from 'animejs';
+import * as anime from 'animejs';
 import { useScrollStore } from '../stores/scrollStore';
 import ScrollSection from './ScrollSection';
 import { useMediaQuery } from '../hooks/useMediaQuery';
@@ -256,9 +256,10 @@ const ProjectTooltip = styled.div`
 `;
 
 // Component for the projects journey
-const isMobile = useMediaQuery('(max-width: 768px)');
-
 const ProjectsJourney = () => {
+  // Move this inside the component
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  
   const containerRef = useRef(null);
   const [hoveredPoint, setHoveredPoint] = useState(null);
   const [activeProject, setActiveProject] = useState(0);
@@ -379,7 +380,7 @@ const ProjectsJourney = () => {
     if (!container) return;
     
     // Animate section title
-    anime({
+    anime.default({
       targets: container.querySelector('.section-title'),
       opacity: [0, 1],
       translateY: [30, 0],
@@ -394,7 +395,7 @@ const ProjectsJourney = () => {
       const showAtProgress = index / (projects.length * 1.2);
       
       if (progress > showAtProgress) {
-        anime({
+        anime.default({
           targets: card,
           opacity: [0, 1],
           scale: [0.8, 1],
@@ -479,8 +480,8 @@ const ProjectsJourney = () => {
               key={index}
               className="project-card"
               style={{
-                left: `calc(${project.position.x} - 175px)`,
-                top: `calc(${project.position.y} - 200px)`,
+                left: isMobile ? "auto" : `calc(${project.position.x} - 175px)`,
+                top: isMobile ? "auto" : `calc(${project.position.y} - 200px)`,
                 zIndex: activeProject === index ? 10 : 5
               }}
             >
