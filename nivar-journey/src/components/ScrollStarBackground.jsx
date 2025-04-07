@@ -28,12 +28,12 @@ const StarLayer = styled.div`
 // Individual star
 const Star = styled.div`
   position: absolute;
-  width: ${props => props.size}px;
-  height: ${props => props.size}px;
-  background: ${props => props.color};
+  width: ${props => props.$size}px;
+  height: ${props => props.$size}px;
+  background: ${props => props.$color};
   border-radius: 50%;
-  opacity: ${props => props.opacity};
-  box-shadow: 0 0 ${props => props.glow}px ${props => props.glow / 2}px ${props => props.color};
+  opacity: ${props => props.$opacity};
+  box-shadow: 0 0 ${props => props.$glow}px ${props => props.$glow / 2}px ${props => props.$color};
 `;
 
 // Dynamic comet trail effect
@@ -44,7 +44,7 @@ const Comet = styled.div`
   width: 1px;
   height: 1px;
   background: transparent;
-  transform: rotate(${props => props.angle}deg);
+  transform: rotate(${props => props.$angle}deg);
   overflow: visible;
   
   &::before {
@@ -52,12 +52,12 @@ const Comet = styled.div`
     position: absolute;
     top: 0;
     left: 0;
-    width: ${props => props.size}px;
-    height: ${props => props.size}px;
+    width: ${props => props.$size}px;
+    height: ${props => props.$size}px;
     border-radius: 50%;
     background: #fff;
-    box-shadow: 0 0 ${props => props.size * 2}px ${props => props.size}px rgba(255, 255, 255, 0.5),
-                0 0 ${props => props.size}px ${props => props.size / 2}px #fff;
+    box-shadow: 0 0 ${props => props.$size * 2}px ${props => props.$size}px rgba(255, 255, 255, 0.5),
+                0 0 ${props => props.$size}px ${props => props.$size / 2}px #fff;
   }
   
   &::after {
@@ -65,7 +65,7 @@ const Comet = styled.div`
     position: absolute;
     top: 0;
     left: 0;
-    width: ${props => props.size * 30}px;
+    width: ${props => props.$size * 30}px;
     height: 1px;
     background: linear-gradient(to right, rgba(255, 255, 255, 0.7), transparent);
     transform-origin: left center;
@@ -78,12 +78,12 @@ const Nebula = styled.div`
   border-radius: 50%;
   background: radial-gradient(
     circle at center,
-    ${props => props.color1} 0%,
-    ${props => props.color2} 40%,
+    ${props => props.$color1} 0%,
+    ${props => props.$color2} 40%,
     transparent 70%
   );
   opacity: 0.15;
-  filter: blur(${props => props.blur}px);
+  filter: blur(${props => props.$blur}px);
 `;
 
 // Animated constellation
@@ -371,10 +371,10 @@ const ScrollStarBackground = () => {
                   left: `${star.x}px`,
                   top: `${star.y}px`
                 }}
-                size={star.size}
-                color={star.color}
-                opacity={star.opacity}
-                glow={star.glow}
+                $size={star.size}
+                $color={star.color}
+                $opacity={star.opacity}
+                $glow={star.glow}
               />
             ))}
         </StarLayer>
@@ -388,8 +388,8 @@ const ScrollStarBackground = () => {
           style={{
             transform: `translateX(${comet.x}px) translateY(${comet.y}px)`
           }}
-          size={comet.size}
-          angle={comet.angle}
+          $size={comet.size}
+          $angle={comet.angle}
         />
       ))}
       
@@ -404,9 +404,9 @@ const ScrollStarBackground = () => {
             width: `${nebula.width}px`,
             height: `${nebula.height}px`
           }}
-          color1={nebula.color1}
-          color2={nebula.color2}
-          blur={nebula.blur}
+          $color1={nebula.color1}
+          $color2={nebula.color2}
+          $blur={nebula.blur}
         />
       ))}
       

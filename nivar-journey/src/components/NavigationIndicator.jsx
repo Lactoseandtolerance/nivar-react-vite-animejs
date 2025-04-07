@@ -18,7 +18,7 @@ const NavDot = styled.div`
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: ${props => props.active ? props.activeColor || '#d4af37' : '#333'};
+  background: ${props => props.$active ? props.$activeColor || '#d4af37' : '#333'};
   transition: all 0.3s ease;
   cursor: pointer;
   position: relative;
@@ -28,13 +28,13 @@ const NavDot = styled.div`
   }
   
   &::after {
-    content: '${props => props.label}';
+    content: '${props => props.$label}';
     position: absolute;
     right: 20px;
     top: 50%;
     transform: translateY(-50%);
     white-space: nowrap;
-    color: ${props => props.active ? props.activeColor || '#d4af37' : '#888'};
+    color: ${props => props.$active ? props.$activeColor || '#d4af37' : '#888'};
     font-size: 14px;
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -49,7 +49,7 @@ const ProgressIndicator = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  width: ${props => props.progress * 100}%;
+  width: ${props => props.$progress * 100}%;
   height: 3px;
   background: linear-gradient(to right, #d4af37, #00e676);
   z-index: 1000;
@@ -73,14 +73,14 @@ const NavigationIndicator = () => {
   
   return (
     <>
-      <ProgressIndicator progress={scrollProgress} />
+      <ProgressIndicator $progress={scrollProgress} />
       <NavContainer>
         {sections.map(section => (
           <NavDot
             key={section.id}
-            active={currentSection === section.id}
-            activeColor={section.color}
-            label={section.label}
+            $active={currentSection === section.id}
+            $activeColor={section.color}
+            $label={section.label}
             onClick={() => scrollToSection(section.id)}
           />
         ))}
